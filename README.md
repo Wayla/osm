@@ -17,11 +17,11 @@ var map = osm();
 document.body.appendChild(map.show());
 
 // show a map of a fixed position
-var map = osm().position(47.88038, 10.6222475);
+map = osm().position(47.88038, 10.6222475);
 document.body.appendChild(map.show());
 
 // show a map of the current position with a custom radius
-var map = osm().radius(0.008);
+map = osm().radius(0.008);
 document.body.appendChild(map.show());
 ```
 
