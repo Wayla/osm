@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset=utf-8></head>
+<body></body>
+<script language=javascript>
+;(function(e,t,n){function i(n,s){if(!t[n]){if(!e[n]){var o=typeof require=="function"&&require;if(!s&&o)return o(n,!0);if(r)return r(n,!0);throw new Error("Cannot find module '"+n+"'")}var u=t[n]={exports:{}};e[n][0].call(u.exports,function(t){var r=e[n][1][t];return i(r?r:t)},u,u.exports)}return t[n].exports}var r=typeof require=="function"&&require;for(var s=0;s<n.length;s++)i(n[s]);return i})({1:[function(require,module,exports){
+var osm = require('..');
+
+/**
+ * Test cases.
+ */
+
+var map = osm();
+document.body.appendChild(box('current position:', map.show()));
+
+map = osm().position(47.88038, 10.6222475);
+document.body.appendChild(box('fixed position:', map.show()));
+
+map = osm().radius(0.008);
+document.body.appendChild(box('radius', map.show()));
+
+/**
+ * Utility.
+ */
+
+function describe (str) {
+  var el = document.createElement('p');
+  el.appendChild(document.createTextNode(str));
+  document.body.appendChild(el);
+}
+
+function box (descr, el) {
+  var b = document.createElement('div');
+  b.style.width = '350px';
+  b.style.float = 'left';
+
+  var p = document.createElement('p');
+  p.appendChild(document.createTextNode(descr));
+  b.appendChild(p);
+
+  b.appendChild(el);
+  return b;
+}
+
+document.body.style.font = '20px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif';
+document.body.style.padding = '20px 40px';
+
+},{"..":2}],2:[function(require,module,exports){
+var getPosition = require('geo-position');
+var base = 'http://www.openstreetmap.org/export/embed.html';
+
+module.exports = Map;
+
+function Map () {
+  if (!(this instanceof Map)) return new Map();
+  this.iframe = document.createElement('iframe');
+
+  this._position = null;
+  this._radius = 0.004;
+}
+
+Map.prototype.radius = function (radius) {
+  this._radius = radius;
+  return this;
+};
+
+Map.prototype.position = function (latitude, longitude) {
+  this._position = {
+    latitude: latitude,
+    longitude: longitude
+  };
+  return this;
+};
+
+Map.prototype.show = function () {
+  var iframe = this.iframe;
+  var r = this._radius;
+
+  if (this._position) onPosition(null, this._position);
+  else getPosition(function (err, obj) {
+    onPosition(err, obj.coords);
+  });
+  
+  function onPosition (err, position) {
+    if (err) return console.error(err);
+
+    var lon = position.longitude;
+    var lat = position.latitude;
+    iframe.src = base
+      + '?layer=mapnik'
+      + '&bbox=' + [lon - r/2, lat - r/4, lon + r/2, lat + r/4].join(',')
+      + '&marker=' + [lat, lon].join(',')
+  }
+
+  return iframe;
+};
+
+},{"geo-position":3}],3:[function(require,module,exports){
+module.exports = getPosition;
+
+function getPosition (opts, fn) {
+  if (arguments.length == 1) {
+    fn = opts;
+    opts = {};
+  }
+
+  if (typeof opts.timeout == 'undefined') opts.timeout = 5000;
+  var unlessTimedOut = createTimeoutHandler(fn, opts.timeout);
+
+  var onposition = unlessTimedOut(fn.bind(this, null));
+  var onerror = unlessTimedOut(fn.bind(this));
+
+  navigator.geolocation.getCurrentPosition(onposition, onerror);
+}
+
+function createTimeoutHandler (fn, timeout) {
+  var timedOut = false;
+
+  var id = setTimeout(function () {
+    timedOut = true;
+    fn(new Error('timed out'));
+  }, timeout);
+
+  return function unlessTimedOut (fn) {
+    return function () {
+      if (timedOut) return;
+      clearTimeout(id);
+      fn.apply(null, arguments);
+    }
+  }
+}
+
+},{}]},{},[1])
+;</script>
+</html>
