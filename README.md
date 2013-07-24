@@ -49,6 +49,11 @@ This method is chainable.
 
 Return the map's dom element.
 
+### osm#on('position', fn)
+
+`fn` gets called when `position` is set via `osm#position` or retrieved using
+the browser's geolocation api.
+
 ## Installation
 
 With [npm](http://npmjs.org) do:

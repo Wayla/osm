@@ -5,6 +5,10 @@ var osm = require('..');
  */
 
 var map = osm();
+map.on('position', function (position) {
+  console.log('You\'re at: (' +
+    position.latitude + ', ' + position.longitude + ')');
+});
 document.body.appendChild(box('current position:', map.show()));
 
 map = osm().position(47.88038, 10.6222475);
