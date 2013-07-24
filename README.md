@@ -25,6 +25,8 @@ map = osm().radius(0.008);
 document.body.appendChild(map.show());
 ```
 
+### [Try it out on requirebin](http://requirebin.com/?gist=6074401)
+
 ## API
 
 ### osm()
