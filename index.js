@@ -37,7 +37,7 @@ Map.prototype.show = function () {
 
   if (self._position) onPosition(null, self._position);
   else getPosition(function (err, obj) {
-    onPosition(err, obj && obj.coords);
+    onPosition(err, obj);
   });
   
   function onPosition (err, position) {

@@ -9,10 +9,16 @@
   "homepage": "https://github.com/Wayla/osm",
   "main": "index.js",
   "dependencies": {
-    "geo-position": "~0.2.0"
+    "geo-position": "~1.0.0"
   },
   "keywords": [
-    "osm", "open-street-maps", "open", "street", "maps", "browser", "browserify"
+    "osm",
+    "open-street-maps",
+    "open",
+    "street",
+    "maps",
+    "browser",
+    "browserify"
   ],
   "author": {
     "name": "Julian Gruber",
