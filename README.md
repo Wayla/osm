@@ -35,13 +35,15 @@ Create a new `osm` instance.
 
 ### osm#position(lat, lon)
 
-Set the position to (`lat`, `long`). If you don't call this method `osm` will try to get the current position using the geolocation api.
+Set the position to (`lat`, `long`). If you don't call this method `osm` will
+try to get the current position using the geolocation api.
 
 This method is chainable.
 
 ### osm#radius(radius)
 
-Set the map's radius in degrees. If you don't call this method, it defaults to `0.002`.
+Set the map's radius in degrees. If you don't call this method, it defaults to
+`0.002`.
 
 This method is chainable.
 
@@ -53,6 +55,11 @@ Return the map's dom element.
 
 `fn` gets called when `position` is set via `osm#position` or retrieved using
 the browser's geolocation api.
+
+### osm#on('error', fn)
+
+If there's an error requesting the user's geolocation, `fn` will be called
+with it.
 
 ## Installation
 
