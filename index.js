@@ -41,7 +41,8 @@ Map.prototype.show = function () {
   });
   
   function onPosition (err, position) {
-    if (err) return console.error(err);
+    if (err) return self.emit('error', err);
+
     self.emit('position', position);
 
     var lon = position.longitude;
